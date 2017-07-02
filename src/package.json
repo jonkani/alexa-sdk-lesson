@@ -1,0 +1,17 @@
+{
+  "name": "highroller",
+  "version": "0.1.0",
+  "description": "An Alexa dice rolling skill.",
+  "main": "index.js",
+  "scripts": {
+    "test": "alexa-skill-test"
+  },
+  "author": "John Carney <jcarney000@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "alexa-sdk": "^1.0.11"
+  },
+  "devDependencies": {
+    "standard": "^10.0.2"
+  }
+}
