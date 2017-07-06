@@ -120,3 +120,37 @@ Hey, it's more default intents! `StopIntent` and `CancelIntent` will catch a wid
 Asute observers might ask why we're using `StopIntent` and `CancelIntent` interchangably and what the difference is between them. In short, they correspond to different utterences, but unless you have a good reason for differentiating them, Amazon suggests that you treat them the same. If you really want the words "stop" and cancel" to mean different things to your skill, that's a thing you can do, though it may make getting through certification a little harder.
 
 The final required intent is `AMAZON.HelpIntent`, which is where you can offer some more in-depth instruction to your user and provide a few more example utterences to get them started. It doesn't use any different syntax from what we've looked at already, so without further ado, let's get to the skill building!
+
+### Skillfully Rolling
+Alright, take a look at the index.js in the src folder. You'll notice a lot of the intents mentioned above are already there, but our custom intent - RollIntent - is blank. If you poked around the intent schema and sample utterances, you might have noticed that we're expecting the user to give us a number in the `times` slot. So, how do we get that number? This is maybe a little less intutive. Our slot value lives off of the event object, like so:
+```javascript
+this.event.request.intent.slots.slotName.value
+```
+
+So, given that, we should be able to implement a roll intent for 6-sided dice. Get the slot value, do some math, and emit a response! Run `alexa-skill-test` in your console to check that your skill is handling input correctly. You will have to manually type in the intent and slot names, but such is the price of glory. 
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+When you're done, you should have something like this:
+```javascript
+'RollIntent': function () {
+  const times = this.event.request.intent.slots.times.value
+  let value = 0
+
+  for (let i = 0; i < times; i++) {
+    value += Math.floor(Math.random() * 6) + 1
+  }
+
+  this.emit(':tell', `You rolled a ${value}!`)
+}
+```

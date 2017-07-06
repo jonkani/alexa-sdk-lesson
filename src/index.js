@@ -23,10 +23,10 @@ const handlers = {
     this.emit(':ask', speech, reprompt)
   },
   'RollIntent': function () {
-    // roll some dice here
+    // rolling happens here
   },
   'AMAZON.HelpIntent': function () {
-    const speech = 'Ask me to roll some number of dice. This isn\'t hard. How many dice would you like me to roll?'
+    const speech = 'Ask me to roll some number of dice. For example, "roll three dice."'
     const reprompt = speech
 
     this.emit(':ask', speech, reprompt)

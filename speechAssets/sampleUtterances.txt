@@ -1,0 +1,3 @@
+RollIntent roll {times} dice
+RollIntent roll a die {times} times
+RollIntent {times}
