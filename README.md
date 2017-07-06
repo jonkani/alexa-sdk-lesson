@@ -178,12 +178,12 @@ First up, let's take a look at the intent schema. If you copied and pasted here,
 {"intent": "RollIntent", "slots": [{"name": "times", "type": "AMAZON.NUMBER"}, {"name": "sides", "type": "AMAZON.NUMBER"}]}
 ```
 Straightforward, yeah? The sample utterances leave a bit more to taste, but you should make sure that you're including both of the slots.
-`
+```
 RollIntent roll a {sides} sided die {times} times
 RollIntent roll {times} d {sides}
 RollIntent roll a d {sides} {times} times
 RollIntent {times} d {sides}
-`
+```
 And finally, the handler!
 ```javascript
 'RollIntent': function () {
