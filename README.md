@@ -1,5 +1,5 @@
 ## I Can Alexa and So Can You
-Have you, ever spent an afternoon shouting at a computer and wishing it would just do the thing you said? Have you giggled to yourself after making a voice synthisizer repeat "doo doo" for minutes straight? Have you wished that there was an intersection of the two preceding things packaged in a handy JavaScript SDK?
+Have you ever spent an afternoon shouting at a computer and wishing it would just do the thing you said? Have you giggled to yourself after making a voice synthisizer repeat "doo doo" for minutes straight? Have you wished that there was an intersection of the two preceding things packaged in a handy JavaScript SDK?
 
 Well, dear reader, I have good news about your increasingly specific wishes. Amazon has a Node SDK for their Alexa Skills Kit, and it significantly reduces the learning curve for getting your hands dirty with Alexa Skills. To go over the basics, we're going to put together a simple dice-rolling skill.
 
@@ -9,7 +9,7 @@ Clone this repo and run
 from within the src folder. You'l also want to install a quick and dirty Alexa skill tester globally, so run
 ```npm install -g alexa-skill-test```
 after the first part's done. 
-Next, you'll need to have a couple accounts for publishing purposes: an (Amazon developer account)[https://developer.amazon.com] and an (AWS account)[https://aws.amazon.com/].
+Next, you'll need to have a couple accounts for publishing purposes: an [Amazon developer account](https://developer.amazon.com) and an [AWS account](https://aws.amazon.com/).
 
 ### Alexa Basics
 
@@ -19,32 +19,53 @@ There are three pieces of vocabulary that are pretty essential to understanding 
 ##### Utterances
 These are the words a user says to Alexa to ask her to do something or provide a response to a question she asked. If a user wanted to use the Domino's skill to order a pizza, they might say:
 
-> Alexa, ask Domino's to order me a pizza.
+> Alexa, ask Domino's to order me a pizza
 
 But similar utterances could have the same result:
 
->ask Domino's to get me a pizza.
+>ask Domino's to get me a pizza
 
 >open Domino's and order a pizza
 
 >tell Domino's that unless I have a pizza on my doorstep in the next 15 minutes I swear to God
 
 etc.
-When creating a skill, you'll give Alexa a number of sample utterances attached to a particular intent that are then used by Alexa to generate a larger list of possible utterances. These utterances should be a varied cross-section of possble ways for a user to make a request. You're not looking to account for every possible change in wording - that's Alexa's job.
+
+When creating a skill, you'll give Alexa a list of sample utterances. They come attached to a particular intent (which we'll get to momentarily) that are used by Alexa to generate a larger list of possible utterances. It should look something like this:
+
+```
+OrderPizzaIntent i want a pizza
+OrderPizzaIntent order a pizza
+OrderPizzaIntent get me a pizza
+```
+
+These utterances should be a varied cross-section of possble ways for a user to make a request. You're not looking to account for every possible change in wording - that's Alexa's job.
 
 ##### Intents
-Intents are the ultimate request that a user's utterence maps to. In other words, they're the functions that're called by the user's utterances. As mentioned above, an intent can be triggered by a variety of similar utterences, based on the developer-provided sample utterances. 
-Along with said sample utterences, you'll create an intent schema that tells Alexa which intents you're using. Alexa has a number of built-in intents that don't require sample utterences (things like an intent to ask for help or an intent to cancel) that you can take advantage of, but you're going to need some number of custom intents to make your skill go. The good news is that this is as easy as adding a new intent name to your schema and listing which slots you're using. Which brings us to...
+Intents are the ultimate request that a user's utterence maps to. That is, ordering a pizza, changing an address, or opening the pod bay doors. As mentioned above, a single intent can be triggered by a variety of similar utterences - both by the sample utterences and their derivations.
+
+Along with said sample utterences, you'll create an intent schema that tells Alexa which intents you're using. Alexa has a number of built-in intents that don't require sample utterences (things like an intent to ask for help or an intent to cancel) that you can take advantage of, but you're going to need some number of custom intents to make your skill go. The good news is that this is as easy as adding a new intent name to your schema and listing which slots you're using. We'll get to what that looks like once we've covered the final piece, which brings us to...
 
 ##### Slots
-Slots are the user-supplied arguments for an intent. That is, they're the extra details a user says with the utterance to give Alexa more information about what the user's request. For example,
-> order me a *pepperoni* pizza
+Slots are the user-supplied arguments for an intent. In other words, they're the extra details a user says with the utterance to give Alexa more information about what the user's request. For example,
+> order me a {*pepperoni*} pizza
 
-> which movies are playing at the *majestic bay*
+> which movies are playing at the {*majestic bay*}
 
-> set phasers to *kill*
+> set phasers to {*kill*}
 
 Slots aren't entirely open-ended; you provide a list of values that the Alexa's speech recognition is weighted towards, but it's not entirely constraied to said list (so error-handling becomes important for when a user tries to set phasers to pepperoni). Amazon provides a number of default slots, covering such things as numbers, city names, and comic book titles, but if you have needs that aren't covered by the defaults, you'll have to provide your own slot type and values to the skill (which is about as easy as making a custom intent).
+
+So, let's take a look at that schema:
+```javascript
+{"intents": [
+    {"intent": "VolumeIntent", "slots": [{"name": "Volume", "type": "AMAZON.NUMBER"}]},
+    {"intent": "AMAZON.YesIntent"},
+    {"intent": "AMAZON.NoIntent"},
+  ]
+}
+```
+Here, we're taking advantage of a couple default intents (which you may recognize from the all-caps AMAZON), and creating one of our own. An intent can have multiple slots - we just add to the array. 
 
 #### Boilerplate
 Now that we've got terminology out of the way, let's take a look a what it takes to get started.
@@ -94,7 +115,7 @@ Let's take a look a couple other required required handlers - stop and cancel.
   this.emit(':tell', 'Goodbye!')
 }
 ```
-Here we can see our first default intents! `StopIntent` and `CancelIntent` are actually intents provided by Amazon. You can recognize such default intents by, believe it or not, the all-caps AMAZON that precedes them. They'll catch a wide variety of user utterences to terminate the skill and route them to our `SessionEndedRequest` handler, which just uses a `:tell` to offer a cordial farewell and stop listening for input, which effectively ends the skill. Remember when I said you could emit other handlers? It's as easy as using the handler name as the first argument. 
+Hey, it's more default intents! `StopIntent` and `CancelIntent` will catch a wide variety of user utterences to terminate the skill and route them to our `SessionEndedRequest` handler, which just uses a `:tell` to offer a cordial farewell and stop listening for input, ending the skill. Remember when I said you could emit other handlers? It's as easy as using the handler name as the first argument. 
 
 Asute observers might ask why we're using `StopIntent` and `CancelIntent` interchangably and what the difference is between them. In short, they correspond to different utterences, but unless you have a good reason for differentiating them, Amazon suggests that you treat them the same. If you really want the words "stop" and cancel" to mean different things to your skill, that's a thing you can do, though it may make getting through certification a little harder.
 
