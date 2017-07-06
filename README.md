@@ -18,11 +18,17 @@ There are three pieces of vocabulary that are pretty essential to understanding 
 
 ##### Utterances
 These are the words a user says to Alexa to ask her to do something or provide a response to a question she asked. If a user wanted to use the Domino's skill to order a pizza, they might say:
+
 > Alexa, ask Domino's to order me a pizza.
+
 But similar utterances could have the same result:
+
 >ask Domino's to get me a pizza.
+
 >open Domino's and order a pizza
+
 >tell Domino's that unless I have a pizza on my doorstep in the next 15 minutes I swear to God
+
 etc.
 When creating a skill, you'll give Alexa a number of sample utterances attached to a particular intent that are then used by Alexa to generate a larger list of possible utterances. These utterances should be a varied cross-section of possble ways for a user to make a request. You're not looking to account for every possible change in wording - that's Alexa's job.
 
@@ -33,8 +39,11 @@ Along with said sample utterences, you'll create an intent schema that tells Ale
 ##### Slots
 Slots are the user-supplied arguments for an intent. That is, they're the extra details a user says with the utterance to give Alexa more information about what the user's request. For example,
 > order me a *pepperoni* pizza
+
 > which movies are playing at the *majestic bay*
+
 > set phasers to *kill*
+
 Slots aren't entirely open-ended; you provide a list of values that the Alexa's speech recognition is weighted towards, but it's not entirely constraied to said list (so error-handling becomes important for when a user tries to set phasers to pepperoni). Amazon provides a number of default slots, covering such things as numbers, city names, and comic book titles, but if you have needs that aren't covered by the defaults, you'll have to provide your own slot type and values to the skill (which is about as easy as making a custom intent).
 
 #### Boilerplate
@@ -59,7 +68,8 @@ Let's look at some of the intents handlers our handlers object might consist of.
 ```javascript
 const handlers = {
   'LaunchRequest': function () {
-    const speech = 'Welcome to This Example! You can ask me questions like, "why?" or "like, what?". What would you like to know?'
+    const speech = 'Welcome to This Example! You can ask me questions like, "what?" or "just, why?". ' +
+    'What would you like to know?'
     const reprompt = 'Sorry, I didn\'t catch that. Ask me the thing again.'
 
     this.emit(':ask', speech, reprompt)
