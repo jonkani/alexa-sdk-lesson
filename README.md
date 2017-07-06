@@ -202,37 +202,40 @@ Now that we've got a simple skill running, let's take a look at getting it up an
 
 ### Submission
 Let's go login to [the Amazon developer site](https://developer.amazon.com) and click on Alexa on the nav bar. Follow the Alexa Skill Kit link, and then go ahead a click on "add new skill". You should see this:
-[img]
+<img src="https://github.com/jcquery/alexa-sdk-lesson/raw/master/screenshots/1.png">
 Let's set the display name and invocation name (which are the actual word(s) a user will use to trigger your skill) to "High Roller" and move on to the interaction model.
-[img]
+<img src="https://github.com/jcquery/alexa-sdk-lesson/raw/master/screenshots/2.png">
 Here are spaces for your intent schema, custom slots if you need them (which we don't), and sample utterances, which comprise the interaction model. Go ahead and paste in your intent schema and utterances, and we'll move on. 
 
 As an aisde, the beta skill builder at the top is pretty cool alternative way to go about building your interaction model and is well worth playing around with, but for the time being, we're keeping things simple.
 
 Now, we need to head to [AWS](https://aws.amazon.com/) to put our skill into a Lamda function. Once you've signed in, click on Services and type Lambda into the search box. 
-[img]
+<img src="https://github.com/jcquery/alexa-sdk-lesson/raw/master/screenshots/3.png">
 
 Make sure your region (in the upper right) is set to US East(North Virginia), because it's the only North American region that supports our Alexa-Lambda nonsense. 
-[img]
+
+<img src="https://github.com/jcquery/alexa-sdk-lesson/raw/master/screenshots/4.png">
 
 We're going to follow this up with that big blue "Create a Lambda Function" button, and then click on the blank function template.
-[img]
+<img src="https://github.com/jcquery/alexa-sdk-lesson/raw/master/screenshots/5.png">
 
 We want our Lamda function to be triggered by our Alexa skill, so go ahead and click the Alexa Skills Kit option.
-[img]
+<img src="https://github.com/jcquery/alexa-sdk-lesson/raw/master/screenshots/6.png">
 
 Now we get to name our function (highRoller is good enough) and upload our src folder (node modules and all) in a zip file. Zip up your src, and send it up!
-[img]
+<img src="https://github.com/jcquery/alexa-sdk-lesson/raw/master/screenshots/7.png">
+
+You might notice that my zip file here is 158 bytes. This actually due to hyper-efficient compression algorithms of my own design, and not because I forgot to actually include any files. Yours should be bigger.
 
 Finally, we need to make a function role for our Lamda funtion. Using the templates, select "Simple Microservice Permissions" and name your role something like "basic_execution". You can leave the handler alone.
-[img]
+<img src="https://github.com/jcquery/alexa-sdk-lesson/raw/master/screenshots/8.png">
 
 Click create, aaaaand... we're done! Copy the ARN in the upper right, and now we can wire the skill itself up to our interaction model.
-[img]
+<img src="https://github.com/jcquery/alexa-sdk-lesson/raw/master/screenshots/9.png">
 
 Head back to the developer site, choose Lambda as your resource, check North America, and paste your ARN in.
-[img]
+<img src="https://github.com/jcquery/alexa-sdk-lesson/raw/master/screenshots/10.png">
 
 That's it! Now we can start testing our skill!
-[img]
+<img src="https://github.com/jcquery/alexa-sdk-lesson/raw/master/screenshots/11.png">
 
