@@ -239,3 +239,7 @@ Head back to the developer site, choose Lambda as your resource, check North Ame
 That's it! Now we can start testing our skill!
 <img src="https://github.com/jcquery/alexa-sdk-lesson/raw/master/screenshots/11.png">
 
+Further reference:
+[Alexa Node SDK Repo](https://github.com/alexa/alexa-skills-kit-sdk-for-nodejs)
+[Alexa tutorials](https://developer.amazon.com/alexa-skills-kit/alexa-skills-developer-training)
+[Custom Skill Docs](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/overviews/understanding-custom-skills)
