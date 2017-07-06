@@ -141,6 +141,8 @@ So, given that, we should be able to implement a roll intent for 6-sided dice. G
 
 .
 
+.
+
 When you're done, you should have something like this:
 ```javascript
 'RollIntent': function () {
@@ -151,6 +153,48 @@ When you're done, you should have something like this:
     value += Math.floor(Math.random() * 6) + 1
   }
 
-  this.emit(':tell', `You rolled a ${value}!`)
+  this.emit(':tell', `Your roll is... ${value}!`)
+}
+```
+
+That's all well and good, but the skill might be more useful if we could specify the number of sides, too, just in case we decide to take up D&D. Take a stab at updating the intent schema, utterances, and index with a new `sides` slot, and then we'll reconvene.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+First up, let's take a look at the intent schema. If you copied and pasted here, I forgive you.
+```javascript
+{"intent": "RollIntent", "slots": [{"name": "times", "type": "AMAZON.NUMBER"}, {"name": "sides", "type": "AMAZON.NUMBER"}]}
+```
+Straightforward, yeah? The sample utterances leave a bit more to taste, but you should make sure that you're including both of the slots.
+`
+RollIntent roll a {sides} sided die {times} times
+RollIntent roll {times} d {sides}
+RollIntent roll a d {sides} {times} times
+RollIntent {times} d {sides}
+`
+And finally, the handler!
+```javascript
+'RollIntent': function () {
+  const times = this.event.request.intent.slots.times.value
+  const sides = this.event.request.intent.slots.sides.value
+  let value = 0
+
+  for (let i = 0; i < times; i++) {
+    value += Math.floor(Math.random() * sides) + 1
+  }
+
+  this.emit(':tell', `Your roll is... ${value}!`)
 }
 ```
