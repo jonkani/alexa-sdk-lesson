@@ -121,7 +121,7 @@ Asute observers might ask why we're using `StopIntent` and `CancelIntent` interc
 
 The final required intent is `AMAZON.HelpIntent`, which is where you can offer some more in-depth instruction to your user and provide a few more example utterences to get them started. It doesn't use any different syntax from what we've looked at already, so without further ado, let's get to the skill building!
 
-### Skillfully Rolling
+### Magic Dice Machine
 Alright, take a look at the index.js in the src folder. You'll notice a lot of the intents mentioned above are already there, but our custom intent - RollIntent - is blank. If you poked around the intent schema and sample utterances, you might have noticed that we're expecting the user to give us a number in the `times` slot. So, how do we get that number? This is maybe a little less intutive. Our slot value lives off of the event object, like so:
 ```javascript
 this.event.request.intent.slots.slotName.value
@@ -157,7 +157,7 @@ When you're done, you should have something like this:
 }
 ```
 
-That's all well and good, but the skill might be more useful if we could specify the number of sides, too, just in case we decide to take up D&D. Take a stab at updating the intent schema, utterances, and index with a new `sides` slot, and then we'll reconvene.
+That's all well and good, but the skill might be more useful if we could specify the number of sides on the die, too, just in case we decide to take up D&D. Take a stab at updating the intent schema, utterances, and index.js with a new `sides` slot, and then we'll reconvene.
 
 .
 
@@ -198,3 +198,41 @@ And finally, the handler!
   this.emit(':tell', `Your roll is... ${value}!`)
 }
 ```
+Now that we've got a simple skill running, let's take a look at getting it up and running online so we can listen to the fruits of our labor. 
+
+### Submission
+Let's go login to [the Amazon developer site](https://developer.amazon.com) and click on Alexa on the nav bar. Follow the Alexa Skill Kit link, and then go ahead a click on "add new skill". You should see this:
+[img]
+Let's set the display name and invocation name (which are the actual word(s) a user will use to trigger your skill) to "High Roller" and move on to the interaction model.
+[img]
+Here are spaces for your intent schema, custom slots if you need them (which we don't), and sample utterances, which comprise the interaction model. Go ahead and paste in your intent schema and utterances, and we'll move on. 
+
+As an aisde, the beta skill builder at the top is pretty cool alternative way to go about building your interaction model and is well worth playing around with, but for the time being, we're keeping things simple.
+
+Now, we need to head to [AWS](https://aws.amazon.com/) to put our skill into a Lamda function. Once you've signed in, click on Services and type Lambda into the search box. 
+[img]
+
+Make sure your region (in the upper right) is set to US East(North Virginia), because it's the only North American region that supports our Alexa-Lambda nonsense. 
+[img]
+
+We're going to follow this up with that big blue "Create a Lambda Function" button, and then click on the blank function template.
+[img]
+
+We want our Lamda function to be triggered by our Alexa skill, so go ahead and click the Alexa Skills Kit option.
+[img]
+
+Now we get to name our function (highRoller is good enough) and upload our src folder (node modules and all) in a zip file. Zip up your src, and send it up!
+[img]
+
+Finally, we need to make a function role for our Lamda funtion. Using the templates, select "Simple Microservice Permissions" and name your role something like "basic_execution". You can leave the handler alone.
+[img]
+
+Click create, aaaaand... we're done! Copy the ARN in the upper right, and now we can wire the skill itself up to our interaction model.
+[img]
+
+Head back to the developer site, choose Lambda as your resource, check North America, and paste your ARN in.
+[img]
+
+That's it! Now we can start testing our skill!
+[img]
+
